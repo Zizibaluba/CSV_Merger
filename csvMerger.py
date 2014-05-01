@@ -60,16 +60,19 @@ def dirCheck(directory):
 		sys.exit()
 	return directory
 
+#Asks the user if they want to include the file name to the last column of each of the rows they're merging
 def wantName():
 	includeName = raw_input("Do you want the filename to be included at the last column in each row? Y/N:\n")
-	while (len(includeName) > 1):
-		raw_input("Not a valid answer. Please only use Y or N.\n")
-	if re.match("y|Y") is not None:
-		return True
-	elif re.match("n|N") is not None:
-		return False
-	else:
-		
+	while True:
+		if (len(includeName) > 1)
+			includName = raw_input("Not a valid answer. Please only use Y or N.\n")
+		else:
+			if re.match("y|Y") is not None:
+				return True
+			elif re.match("n|N") is not None:
+				return False
+			else:
+				includeName = "bad"
 
 if __name__ == "__main__":
 	csvDic = []
