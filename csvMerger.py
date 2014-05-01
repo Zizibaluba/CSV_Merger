@@ -52,7 +52,6 @@ def minusDotAfter(string):
 
 #Checks if directory exists, make sure user wants that particular directory
 def dirCheck(directory):
-	print(len(directory))
 	while (len(directory) < 1):
 		directory = raw_input("Please input a directory or restart program with a directory argument:\n")
 	if (os.path.isdir(directory) is True):
@@ -78,7 +77,10 @@ def wantName():
 
 if __name__ == "__main__":
 	csvDic = []
-	directory = sys.argv[1]
+	if len(sys.argv) > 2:
+		directory = sys.argv[1]
+	else:
+		directory = ""
 	directory = dirCheck(directory)
 	os.chdir(directory)
 	#Gets all csv files from the current directory
