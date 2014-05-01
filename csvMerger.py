@@ -3,11 +3,12 @@ import glob
 import csv
 import pprint
 import re
+import os
 
 #Processes a CSV file by loading all rows into individual lists, grouped in to a big list of lists
 def processCsv(filename):
 	csvDic = []
-	with open(filename, newline='') as f:
+	with open(filename) as f:
 		reader = csv.reader(f)
 		i = 0
 		for row in reader:
@@ -51,10 +52,11 @@ def minusDotAfter(string):
 
 #Checks if directory exists, make sure user wants that particular directory
 def dirCheck(directory):
+	print(len(directory))
 	while (len(directory) < 1):
 		directory = raw_input("Please input a directory or restart program with a directory argument:\n")
 	if (os.path.isdir(directory) is True):
-		raw_input("The CSV is in is: " + str(directory) + "\nPress enter to continue or end program with Ctrl + C.")
+		raw_input("The CSV is in is: " + str(directory) + "\nPress enter to continue or end program with Ctrl + C.\n")
 	else:
 		print("The directory does not exist. Please try again. Ending Program")
 		sys.exit()
@@ -64,20 +66,21 @@ def dirCheck(directory):
 def wantName():
 	includeName = raw_input("Do you want the filename to be included at the last column in each row? Y/N:\n")
 	while True:
-		if (len(includeName) > 1)
-			includName = raw_input("Not a valid answer. Please only use Y or N.\n")
+		if (len(includeName) > 1):
+			includeName = raw_input("Not a valid answer. Please only use Y or N.\n")
 		else:
-			if re.match("y|Y") is not None:
+			if re.match("y|Y", includeName) is not None:
 				return True
-			elif re.match("n|N") is not None:
+			elif re.match("n|N", includeName) is not None:
 				return False
 			else:
 				includeName = "bad"
 
 if __name__ == "__main__":
 	csvDic = []
-	directory = argv[0]
+	directory = sys.argv[1]
 	directory = dirCheck(directory)
+	os.chdir(directory)
 	#Gets all csv files from the current directory
 	csvFilenames = glob.glob("*.csv")
 	#Ask user if they want to include the filename in the CSV output
@@ -86,7 +89,9 @@ if __name__ == "__main__":
 	for filename in csvFilenames:
 		csvDicPart = processCsv(filename)
 		for row in csvDicPart:
-			#Adds the name of the file to the csv row to differentiate between where the row came from
-			row.append(minusDotAfter(filename))
+			#Adds the name of the file to the csv row to differentiate between where the row came from if includName is True
+			if (includeName == True):
+				row.append(minusDotAfter(filename))
 			csvDic.append(row)
 	writeCsvFile(csvDic)
+	print("\n=====\nDone!\n=====\n")
