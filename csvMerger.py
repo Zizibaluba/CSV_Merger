@@ -1,15 +1,3 @@
-"""
-This program was written to take all csv files in a directory (will be specified by the user in a later iteration) and merge all of it together down the row. The program will also append the name of the file for each row.
-
-4/30/14
-Basic structure of the program is complete. Will need to create some basic UI for user interaction. The follwing is a list of things to make:
--Ask if the directory is correct
--Ask if to include the filenames at the end
--Ask for a filename to export to
--If exporting file name already exists, ask for a new filename or complex string to overwrite that file
-
-"""
-
 import sys
 import glob
 import csv
@@ -61,10 +49,36 @@ def minusDotAfter(string):
 	string = re.sub("[.]", "", string)
 	return string
 
+#Checks if directory exists, make sure user wants that particular directory
+def dirCheck(directory):
+	while (len(directory) < 1):
+		directory = raw_input("Please input a directory or restart program with a directory argument:\n")
+	if (os.path.isdir(directory) is True):
+		raw_input("The CSV is in is: " + str(directory) + "\nPress enter to continue or end program with Ctrl + C.")
+	else:
+		print("The directory does not exist. Please try again. Ending Program")
+		sys.exit()
+	return directory
+
+def wantName():
+	includeName = raw_input("Do you want the filename to be included at the last column in each row? Y/N:\n")
+	while (len(includeName) > 1):
+		raw_input("Not a valid answer. Please only use Y or N.\n")
+	if re.match("y|Y") is not None:
+		return True
+	elif re.match("n|N") is not None:
+		return False
+	else:
+		
+
 if __name__ == "__main__":
 	csvDic = []
+	directory = argv[0]
+	directory = dirCheck(directory)
 	#Gets all csv files from the current directory
 	csvFilenames = glob.glob("*.csv")
+	#Ask user if they want to include the filename in the CSV output
+	includeName = wantName()
 	#Takes all csv files and processes then write everything in memory to the combined csv file
 	for filename in csvFilenames:
 		csvDicPart = processCsv(filename)
