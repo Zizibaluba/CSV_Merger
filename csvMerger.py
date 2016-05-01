@@ -12,14 +12,10 @@ def processCsv(filename):
 		reader = csv.reader(f)
 		i = 0
 		for row in reader:
-			#Skip over all headers
-			if (i < 4):
+			#Skip over header
+			if (i < 1):
 				i += 1
 				continue
-			#Largest Row number minus 1
-			elif (i > 46):
-				break
-			#All other rows loaded into a list
 			else:
 				csvDic.append(row)
 				i += 1
